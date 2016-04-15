@@ -1,10 +1,15 @@
 import datetime
 import os
 import time
-from ansible.plugins.callback import CallbackBase
 
+# Ansible 1.9 and 2.0 compatibility
+try:
+    from ansible.plugins.callback import CallbackBase
+    parent_class = CallbackBase
+except ImportError:
+    parent_class = object
 
-class CallbackModule(CallbackBase):
+class CallbackModule(parent_class):
     """
     A plugin for timing tasks
     """
@@ -65,5 +70,5 @@ class CallbackModule(CallbackBase):
                 time.asctime(),
                 len(self.stats.items()),
                 datetime.timedelta(seconds=(int(total_seconds)))
-                )
-          )
+            )
+        )
